@@ -1,0 +1,77 @@
+create database Stalkiex_normativos1;
+use Stalkiex_normativos1;
+ 
+ 
+CREATE TABLE Projeto (
+  CodProj VARCHAR(10) PRIMARY KEY,
+  Tipo VARCHAR(20),
+  Descricao VARCHAR(50)
+);
+ 
+CREATE TABLE Empregado (
+  CodEmp INT PRIMARY KEY,
+  Nome VARCHAR(20),
+  Categoria VARCHAR(10),
+  FOREIGN KEY (Categoria) REFERENCES Categoria(Categoria)
+);
+ 
+CREATE TABLE Categoria (
+  Categoria VARCHAR(10) PRIMARY KEY,
+  Salario INT
+);
+ 
+CREATE TABLE Projeto_Empregado (
+  CodProj VARCHAR(10),
+  CodEmp INT,
+  DataIni DATE,
+  TProj INT,
+  PRIMARY KEY (CodProj, CodEmp, DataIni),
+  FOREIGN KEY (CodProj) REFERENCES Projeto(CodProj),
+  FOREIGN KEY (CodEmp) REFERENCES Empregado(CodEmp)
+);
+ 
+INSERT INTO Projeto (CodProj, Tipo, Descricao) 
+VALUES
+('LSC001', 'Novo Des.', 'Sistema de Stock'),
+('PAG02', 'Manutenção', 'Sistema de RH');
+ 
+INSERT INTO Empregado (CodEmp, Nome, Categoria)
+VALUES
+(2146, 'João', 'A1'),
+(3145, 'Sérgio', 'A2'),
+(6126, 'José', 'B1'),
+(1214, 'Carlos’', 'A1'),
+(8191, 'Mário', 'A1'),
+(4112, 'João', 'A2');
+ 
+INSERT INTO Categoria (Categoria, Salario) 
+VALUES
+('A1', 4),
+('A2', 4),
+('B1', 2);
+ 
+INSERT INTO Projeto_Empregado (CodProj, CodEmp, DataIni, TProj) 
+VALUES
+('LSC001', 2146, '1991-01-01', 24),
+('LSC001', 3145, '1991-10-02', 24),
+('LSC001', 6126, '1992-01-01', 12),
+('LSC001', 1214, '1992-01-01', 12),
+('PAG02', 8191, '1992-01-01', 18),
+('PAG02', 4112, '1992-01-01', 18),
+('PAG02', 4112, '1992-11-01', 12);
+ 
+SELECT
+    p.CodProj,
+    p.Tipo,
+    p.Descricao,
+    e.CodEmp,
+    e.Nome,
+    e.Categoria,
+    c.Salario,
+    pe.DataIni,
+    pe.TProj
+FROM Projeto_Empregado pe
+JOIN Projeto p ON pe.CodProj = p.CodProj
+JOIN Empregado e ON pe.CodEmp = e.CodEmp
+JOIN Categoria c ON e.Categoria = c.Categoria
+ORDER BY p.CodProj, pe.DataIni;
