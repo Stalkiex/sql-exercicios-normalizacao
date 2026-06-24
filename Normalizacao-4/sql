@@ -1,0 +1,70 @@
+create database Stalkiex_normativos4;
+use Stalkiex_normativos4;
+
+create table Artista (
+Artld int primary key,
+ArtNome varchar(50)
+);
+
+create table Album (
+Albld int primary key,
+Artld int,
+AlbTítulo varchar(50),
+AlbAno int,
+foreign key (Artld) references Artista (Artld)
+);
+
+create table Faixa (
+Artld int,
+Albld int,
+FNum int,
+FTítulo varchar(50),
+FDuração time,
+foreign key (Artld) references Artista (Artld),
+foreign key (Albld) references Album (Albld)
+);
+
+insert into Artista (Artld, ArtNome)
+values
+(1,	'Caetano Veloso'),
+(2,	'Sonic Youth'),
+(3,	'Lou Reed'),
+(4,	'Leonard Cohen'),
+(5,	'Johnny Cash');
+
+insert into Album (Albld, AlbTítulo, AlbAno, Artld)
+values
+(1,	'Abraçaço',	2012,1),
+(2,	'Caetanear', 1984,1),
+(3,	'Goo',	1990,2 ),
+(4,	'Sister',	1987,2),
+(5,	'Best Of',	1984, 3 ),
+(6,	'Best Of',	1975,4 ),
+(7,	'American Recordings',1994,5 );
+
+insert into Faixa (Artld, Albld, FNum, FTítulo, FDuração)
+values
+(1,	1,1,'Um Abraçaço','03:50'),
+(1,	1,2,'Estou Triste','05:13'),
+(1,	1,8,'Vinco','04:38'),
+(1,	2,8,'Sampa','03:17'),
+(2,	3,8,'Mildred Piece','02:12'),
+(2,	4,8,'Hot Wire my Heart','03:47'),
+(3,	5,1,'Perfect Day',	'03:47'),
+(3,	5,2,'Walk on the Wild Side','04:15'),
+(4,	6,4,'Bird on the Wire',	'03:27'),
+(5,	7,8,'Bird on the Wire',	'04:02');
+
+
+select
+a. Artld,
+a.ArtNome,
+al.Albld,
+al.AlbTítulo,
+al.AlbAno,
+f.FNum,
+f.FTítulo,
+f.FDuração
+from Faixa f
+join Artista a on a.Artld=f.Artld
+join Album al on al.Albld=f.Albld
