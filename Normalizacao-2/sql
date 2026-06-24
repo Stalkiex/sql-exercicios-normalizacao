@@ -1,0 +1,85 @@
+create database Stalkiex_normativos2;
+use Stalkiex_normativos2;
+
+
+create table Aluno (
+    Nest int primary key,
+    NomeEst varchar(50),
+    Curso varchar(45)
+);
+
+create table Professor (
+    CodProf int primary key,
+    NomeProf varchar(50),
+    CatProf varchar(20)
+);
+
+
+create table Disciplina (
+    Ndisc int primary key,
+    NomeDisc varchar(50),
+    CodProf int,
+    foreign key (CodProf) references Professor(CodProf)
+);
+
+create table Nota (
+    Nota int,
+    Ndisc int,
+    Nest int,
+    CodProf int,
+    foreign key (Ndisc) references Disciplina(Ndisc),
+    foreign key (Nest) references Aluno(Nest),
+    foreign key (CodProf) references Professor(CodProf)
+);
+
+Insert into Professor (CodProf, NomeProf, CatProf)
+values
+(21,'Gil Alves','PA'),
+(87,'Ana Lopes','PC'),
+(43,'Paulo Pinto','AS'),
+(32,'Nuno Neves','AE');
+
+Insert into Aluno (Nest, NomeEst, Curso)
+values
+(21934,'Antunes','Informática'),
+(42346,'Bernardo','Matemática'),
+(54323,'Correia','Estatistica');
+
+Insert Into Disciplina (Ndisc, NomeDisc, CodProf)
+Values
+(4,'Álgebra', 21),
+(14,'Analise sist.', 87),
+(23,'Prog.Linear', 43),
+(8,'Topologia', 32),
+(12,'Geometria', 21),
+(16,'Lógica', 32);
+
+Insert Into Nota (Nest, Ndisc, Nota, CodProf)
+Values
+(21934,4,15,21),
+(21934,14,0,87),
+(21934,23,16,43),
+(42346,8,10,32),
+(42346,4,0,21),
+(42346,12,18,21),
+(42346,16,13,32),
+(54323,4,11,21),
+(54323,8,10,32);
+
+
+Select
+a.Nest as Nest,
+a.NomeEst as NomeEst,
+a.curso as Curso,
+d.Ndisc as Ndisc,
+d.NomeDisc as NomeDisc,
+p.CodProf as CodProf,
+p.NomeProf as NomeProf,
+p.CatProf as CatProf,
+n.Nota as Nota
+from Nota n
+join Aluno a on n.Nest= a.Nest
+join Disciplina d on n.Ndisc= d.Ndisc
+join Professor p on n.CodProf= p.CodProf;
+
+
